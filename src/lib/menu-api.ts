@@ -20,6 +20,33 @@ export interface MenuQuery {
   popular?: boolean;
 }
 
+export function parseMenuQuery(searchParams: URLSearchParams): MenuQuery {
+  const query: MenuQuery = {};
+
+  const categoryParam = searchParams.get("category");
+  if (categoryParam) {
+    const category = menuCategories.find((c) => c.id === categoryParam);
+    if (category) {
+      query.categoryId = category.id;
+    }
+  }
+
+  const search = searchParams.get("search");
+  if (search) {
+    query.search = search;
+  }
+
+  if (searchParams.get("featured") === "true") {
+    query.featured = true;
+  }
+
+  if (searchParams.get("popular") === "true") {
+    query.popular = true;
+  }
+
+  return query;
+}
+
 export async function fetchMenuCategories(): Promise<MenuCategory[]> {
   return menuCategories.filter((c) => c.available).sort((a, b) => a.sortOrder - b.sortOrder);
 }

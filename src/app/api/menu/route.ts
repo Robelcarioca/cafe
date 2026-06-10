@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { fetchMenuCategories, fetchMenuItems } from "@/lib/menu-api";
+import { fetchMenuCategories, fetchMenuItems, parseMenuQuery } from "@/lib/menu-api";
 
 /**
  * Public menu API — ready to swap for database-backed implementation.
@@ -9,14 +9,10 @@ import { fetchMenuCategories, fetchMenuItems } from "@/lib/menu-api";
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const categoryId = searchParams.get("category") ?? undefined;
-  const search = searchParams.get("search") ?? undefined;
+  const query = parseMenuQuery(searchParams);
   const includeCategories = searchParams.get("categories") === "true";
 
-  const items = await fetchMenuItems({
-    categoryId: categoryId as Parameters<typeof fetchMenuItems>[0]["categoryId"],
-    search,
-  });
+  const items = await fetchMenuItems(query);
 
   if (includeCategories) {
     const categories = await fetchMenuCategories();
