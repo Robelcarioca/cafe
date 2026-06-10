@@ -7,59 +7,87 @@ import type { MenuItem } from "@/types/menu";
 interface MenuCardProps {
   item: MenuItem;
   index?: number;
+  variant?: "list" | "card";
 }
 
-export function MenuCard({ item, index = 0 }: MenuCardProps) {
+export function MenuCard({ item, index = 0, variant = "list" }: MenuCardProps) {
+  if (variant === "card") {
+    return (
+      <motion.article
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.45, delay: Math.min(index * 0.05, 0.25) }}
+        whileHover={{ y: -3 }}
+        className="group rounded-xl border border-brand-tan/40 bg-white/80 p-5 shadow-soft transition-shadow hover:shadow-card dark:border-brand-brown/40 dark:bg-brand-brown-deep/50"
+      >
+        <MenuItemContent item={item} />
+      </motion.article>
+    );
+  }
+
   return (
     <motion.article
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.4, delay: Math.min(index * 0.04, 0.3) }}
-      whileHover={{ y: -2 }}
-      className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white/90 p-4 shadow-card backdrop-blur-sm transition-shadow hover:shadow-card-hover dark:border-white/10 dark:bg-gray-900/80"
+      initial={{ opacity: 0, x: -8 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: "-20px" }}
+      transition={{ duration: 0.35, delay: Math.min(index * 0.03, 0.2) }}
+      className="group border-b border-brand-tan/30 py-4 last:border-0 dark:border-brand-brown/30"
     >
-      <div className="absolute left-0 top-0 h-full w-1 scale-y-0 bg-brand-red transition-transform duration-300 group-hover:scale-y-100" />
+      <MenuItemContent item={item} />
+    </motion.article>
+  );
+}
 
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="font-sans text-sm font-semibold uppercase tracking-wide text-gray-900 dark:text-white sm:text-base">
-              {item.name}
-            </h3>
-            {item.popular && (
-              <span className="rounded-full bg-brand-red/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-brand-red">
-                Popular
-              </span>
-            )}
-            {item.featured && (
-              <span className="rounded-full bg-brand-gold/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-                Chef&apos;s Pick
-              </span>
-            )}
-          </div>
-          {item.description && (
-            <p className="mt-1 text-xs leading-relaxed text-gray-500 dark:text-gray-400">
-              {item.description}
-            </p>
-          )}
-          {item.tags && item.tags.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1">
-              {item.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-md bg-green-50 px-1.5 py-0.5 text-[10px] font-medium capitalize text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-        <p className="shrink-0 font-sans text-sm font-bold text-brand-red sm:text-base">
+function MenuItemContent({ item }: { item: MenuItem }) {
+  return (
+    <>
+      <div className="flex items-baseline gap-2">
+        <h3 className="shrink-0 font-sans text-sm font-bold uppercase tracking-wide text-brand-ink dark:text-brand-linen sm:text-[15px]">
+          {item.name}
+        </h3>
+        <span className="dot-leader hidden min-w-[2rem] sm:block" aria-hidden />
+        <p className="shrink-0 font-sans text-sm font-semibold tabular-nums text-brand-brown dark:text-brand-tan sm:text-[15px]">
           {formatPrice(item.price, item.currency)}
         </p>
       </div>
-    </motion.article>
+
+      {(item.description || item.popular || item.featured || item.tags?.length) && (
+        <div className="mt-1.5">
+          {item.description && (
+            <p className="text-xs leading-relaxed text-brand-brown/65 dark:text-brand-tan/60">
+              {item.description}
+            </p>
+          )}
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {item.featured && <Badge label="Signature" variant="gold" />}
+            {item.popular && <Badge label="Popular" variant="brown" />}
+            {item.tags?.map((tag) => (
+              <Badge key={tag} label={tag} variant="muted" />
+            ))}
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+function Badge({
+  label,
+  variant,
+}: {
+  label: string;
+  variant: "gold" | "brown" | "muted";
+}) {
+  const styles = {
+    gold: "bg-brand-gold/15 text-brand-brown-dark dark:text-brand-gold",
+    brown: "bg-brand-brown/10 text-brand-brown dark:bg-brand-tan/15 dark:text-brand-tan",
+    muted: "bg-brand-parchment/80 text-brand-brown/70 capitalize dark:bg-brand-brown/30 dark:text-brand-tan/70",
+  };
+
+  return (
+    <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${styles[variant]}`}>
+      {label}
+    </span>
   );
 }

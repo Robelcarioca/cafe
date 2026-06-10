@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { CategoryHeading } from "./CategoryHeading";
+import { FoodThumbnail } from "./FoodThumbnail";
 import { formatPrice } from "@/lib/format";
 import type { MenuItem } from "@/types/menu";
 
@@ -12,54 +14,39 @@ export function FeaturedSection({ items }: FeaturedSectionProps) {
   if (items.length === 0) return null;
 
   return (
-    <section className="px-4 py-8 sm:px-6" aria-labelledby="featured-heading">
+    <section className="px-4 py-10 sm:px-6" aria-labelledby="featured-heading">
       <div className="mx-auto max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-6 text-center"
-        >
-          <h2 id="featured-heading" className="font-script text-3xl text-gray-800 dark:text-gray-100">
-            Featured Selection
-          </h2>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Handpicked favorites from our kitchen
-          </p>
-        </motion.div>
+        <CategoryHeading title="Signature Selection" subtitle="Handpicked by our chefs" />
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {items.slice(0, 6).map((item, index) => (
             <motion.article
               key={item.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.08 }}
-              whileHover={{ scale: 1.02 }}
-              className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-brand-red to-brand-red-dark p-[1px] shadow-lg shadow-brand-red/20"
+              transition={{ delay: index * 0.07, duration: 0.5 }}
+              whileHover={{ y: -4 }}
+              className="menu-section-box flex flex-col items-center text-center"
             >
-              <div className="rounded-2xl bg-white p-5 dark:bg-gray-900">
-                <div className="mb-3 flex items-center justify-between">
-                  <span className="text-2xl">
-                    {item.categoryId === "pizza" ? "🍕" : item.categoryId === "burgers" ? "🍔" : item.categoryId === "breakfast" ? "🌅" : "✨"}
-                  </span>
-                  <span className="rounded-full bg-brand-gold/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-                    Featured
-                  </span>
-                </div>
-                <h3 className="font-semibold uppercase tracking-wide text-gray-900 dark:text-white">
-                  {item.name}
-                </h3>
-                {item.description && (
-                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
-                    {item.description}
-                  </p>
-                )}
-                <p className="mt-3 text-lg font-bold text-brand-red">
-                  {formatPrice(item.price, item.currency)}
+              <FoodThumbnail categoryId={item.categoryId} size="lg" />
+              <h3
+                id={index === 0 ? "featured-heading" : undefined}
+                className="mt-5 font-sans text-sm font-bold uppercase tracking-wide text-brand-ink dark:text-brand-linen"
+              >
+                {item.name}
+              </h3>
+              {item.description && (
+                <p className="mt-2 text-xs leading-relaxed text-brand-brown/65 dark:text-brand-tan/60 line-clamp-2">
+                  {item.description}
                 </p>
-              </div>
+              )}
+              <p className="mt-4 font-sans text-base font-semibold tabular-nums text-brand-brown dark:text-brand-tan">
+                {formatPrice(item.price, item.currency)}
+              </p>
+              <span className="mt-3 rounded-full bg-brand-gold/15 px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-brand-brown-dark dark:text-brand-gold">
+                Signature
+              </span>
             </motion.article>
           ))}
         </div>

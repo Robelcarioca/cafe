@@ -5,18 +5,17 @@ import { motion } from "framer-motion";
 import { CategoryNav } from "./CategoryNav";
 import { FeaturedSection } from "./FeaturedSection";
 import { Hero } from "./Hero";
-import { ImageGallery } from "./ImageGallery";
 import { MenuSection } from "./MenuSection";
+import { MenuShowcase } from "./MenuShowcase";
 import { PopularCarousel } from "./PopularCarousel";
 import { SearchBar } from "./SearchBar";
-import type { GalleryImage, MenuCategory, MenuItem, MenuCategoryId } from "@/types/menu";
+import type { MenuCategory, MenuItem, MenuCategoryId } from "@/types/menu";
 
 interface MenuPageProps {
   categories: MenuCategory[];
   items: MenuItem[];
   featuredItems: MenuItem[];
   popularItems: MenuItem[];
-  galleryImages: GalleryImage[];
 }
 
 export function MenuPage({
@@ -24,7 +23,6 @@ export function MenuPage({
   items,
   featuredItems,
   popularItems,
-  galleryImages,
 }: MenuPageProps) {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<MenuCategoryId | "all">("all");
@@ -78,7 +76,7 @@ export function MenuPage({
     <>
       <Hero />
 
-      <div className="px-4 pb-4 sm:px-6">
+      <div className="px-4 pb-6 sm:px-6">
         <SearchBar
           value={search}
           onChange={setSearch}
@@ -104,11 +102,11 @@ export function MenuPage({
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="px-4 py-16 text-center sm:px-6"
+          className="px-4 py-20 text-center sm:px-6"
         >
-          <p className="text-4xl">🔍</p>
-          <p className="mt-4 font-script text-2xl text-gray-700 dark:text-gray-200">No items found</p>
-          <p className="mt-2 text-sm text-gray-500">Try a different search or category</p>
+          <p className="font-display text-4xl italic text-brand-brown/30">Empty</p>
+          <p className="mt-4 font-script text-2xl text-brand-brown dark:text-brand-tan">No items found</p>
+          <p className="mt-2 text-xs uppercase tracking-[0.2em] text-brand-brown/50">Try another search or category</p>
         </motion.div>
       ) : (
         visibleCategories.map((category) => (
@@ -123,7 +121,7 @@ export function MenuPage({
         ))
       )}
 
-      {showHighlights && <ImageGallery images={galleryImages} />}
+      {showHighlights && <MenuShowcase />}
     </>
   );
 }

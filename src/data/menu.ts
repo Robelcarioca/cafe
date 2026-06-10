@@ -146,15 +146,6 @@ export const menuItems: MenuItem[] = [
   item("ex-16", "Extra Tuna (Plates)", 150, "extras", 16),
 ];
 
-export const galleryImages = [
-  { id: "g1", src: "/images/menu-page-1.jpg", alt: "Pizza, burgers and plates", category: "pizza" as const },
-  { id: "g2", src: "/images/menu-page-2.jpg", alt: "Breakfast and drinks", category: "breakfast" as const },
-  { id: "g3", src: "/images/gallery-club-sandwich.jpg", alt: "Club sandwich", category: "burgers" as const },
-  { id: "g4", src: "/images/gallery-burger.jpg", alt: "Cheese burger with fries", category: "burgers" as const },
-  { id: "g5", src: "/images/gallery-pizza.jpg", alt: "Fresh pizza", category: "pizza" as const },
-  { id: "g6", src: "/images/gallery-smoothie.jpg", alt: "Fresh mango smoothie", category: "juice" as const },
-];
-
 export function getItemsByCategory(categoryId: MenuItem["categoryId"]): MenuItem[] {
   return menuItems
     .filter((i) => i.categoryId === categoryId && i.available)

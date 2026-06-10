@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import type { MenuCategory, MenuCategoryId } from "@/types/menu";
 
@@ -17,11 +17,10 @@ export function CategoryNav({
   onCategoryChange,
   onScrollToCategory,
 }: CategoryNavProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
   const [isSticky, setIsSticky] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsSticky(window.scrollY > 280);
+    const handleScroll = () => setIsSticky(window.scrollY > 320);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -33,21 +32,20 @@ export function CategoryNav({
     }
   };
 
-  const tabs: { id: MenuCategoryId | "all"; label: string; icon?: string }[] = [
+  const tabs: { id: MenuCategoryId | "all"; label: string }[] = [
     { id: "all", label: "All" },
-    ...categories.map((c) => ({ id: c.id, label: c.name, icon: c.icon })),
+    ...categories.map((c) => ({ id: c.id, label: c.name })),
   ];
 
   return (
     <div
-      className={`sticky top-[108px] z-40 transition-all duration-300 md:top-[65px] ${
-        isSticky ? "shadow-md" : ""
+      className={`sticky top-[108px] z-40 transition-shadow duration-300 md:top-[61px] ${
+        isSticky ? "shadow-soft" : ""
       }`}
     >
-      <div className="border-b border-gray-200/60 bg-white/90 backdrop-blur-xl dark:border-white/10 dark:bg-gray-950/90">
+      <div className="border-y border-brand-tan/40 bg-brand-cream/95 backdrop-blur-xl dark:border-brand-brown/40 dark:bg-brand-brown-deep/95">
         <div
-          ref={scrollRef}
-          className="scrollbar-hide mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 py-3 sm:px-6"
+          className="scrollbar-hide mx-auto flex max-w-6xl gap-0.5 overflow-x-auto px-4 py-3 sm:gap-1 sm:px-6"
           role="tablist"
           aria-label="Menu categories"
         >
@@ -60,23 +58,20 @@ export function CategoryNav({
                 role="tab"
                 aria-selected={isActive}
                 onClick={() => handleClick(tab.id)}
-                className={`relative shrink-0 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-colors sm:text-sm ${
+                className={`relative shrink-0 rounded-lg px-3.5 py-2 text-[10px] font-bold uppercase tracking-[0.18em] transition-colors sm:px-4 sm:text-[11px] ${
                   isActive
                     ? "text-white"
-                    : "text-gray-600 hover:text-brand-red dark:text-gray-300 dark:hover:text-brand-red-light"
+                    : "text-brand-brown/70 hover:text-brand-brown-dark dark:text-brand-tan/60 dark:hover:text-brand-tan"
                 }`}
               >
                 {isActive && (
                   <motion.span
                     layoutId="category-pill"
-                    className="absolute inset-0 rounded-full bg-brand-red shadow-md shadow-brand-red/25"
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    className="absolute inset-0 rounded-lg bg-brand-brown shadow-soft dark:bg-brand-brown-light"
+                    transition={{ type: "spring", stiffness: 400, damping: 32 }}
                   />
                 )}
-                <span className="relative z-10 flex items-center gap-1.5">
-                  {tab.icon && <span className="text-sm">{tab.icon}</span>}
-                  {tab.label}
-                </span>
+                <span className="relative z-10">{tab.label}</span>
               </button>
             );
           })}

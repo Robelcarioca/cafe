@@ -17,7 +17,7 @@ export function SearchBar({ value, onChange, resultCount }: SearchBarProps) {
     >
       <div className="relative">
         <svg
-          className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
+          className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-brown/40"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -29,25 +29,25 @@ export function SearchBar({ value, onChange, resultCount }: SearchBarProps) {
           type="search"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="Search menu items..."
-          className="w-full rounded-2xl border border-gray-200/80 bg-white/90 py-3.5 pl-12 pr-12 text-sm text-gray-900 shadow-sm backdrop-blur-sm transition focus:border-brand-red/50 focus:outline-none focus:ring-2 focus:ring-brand-red/20 dark:border-white/10 dark:bg-gray-900/80 dark:text-white dark:placeholder-gray-500"
+          placeholder="Search our menu..."
+          className="premium-input"
           aria-label="Search menu items"
         />
         {value && (
           <button
             type="button"
             onClick={() => onChange("")}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-red"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-brand-brown/40 transition hover:text-brand-brown"
             aria-label="Clear search"
           >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         )}
       </div>
       {value && resultCount !== undefined && (
-        <p className="mt-2 text-center text-xs text-gray-500 dark:text-gray-400">
+        <p className="mt-2 text-center text-[10px] uppercase tracking-[0.2em] text-brand-brown/50">
           {resultCount} {resultCount === 1 ? "item" : "items"} found
         </p>
       )}

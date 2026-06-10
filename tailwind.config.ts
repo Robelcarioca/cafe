@@ -11,12 +11,17 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          red: "#E31E24",
-          "red-dark": "#C4191F",
-          "red-light": "#FF3B42",
-          gold: "#C9A962",
-          marble: "#F8F6F3",
-          charcoal: "#2D2D2D",
+          cream: "#FAF6F0",
+          linen: "#F3EDE3",
+          parchment: "#EDE6DA",
+          brown: "#7A6551",
+          "brown-dark": "#4A3F35",
+          "brown-deep": "#3D342C",
+          "brown-light": "#A68B6A",
+          tan: "#C9B08A",
+          "tan-light": "#D9C9AD",
+          ink: "#1C1917",
+          gold: "#B8956B",
         },
       },
       fontFamily: {
@@ -24,29 +29,31 @@ const config: Config = {
         script: ["var(--font-cormorant)", "Georgia", "serif"],
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
-      backgroundImage: {
-        marble:
-          "linear-gradient(135deg, #faf9f7 0%, #f5f3ef 25%, #faf9f7 50%, #f0ede8 75%, #faf9f7 100%)",
-        "marble-dark":
-          "linear-gradient(135deg, #1a1a1a 0%, #252525 25%, #1a1a1a 50%, #2a2a2a 75%, #1a1a1a 100%)",
-      },
       boxShadow: {
-        card: "0 4px 24px rgba(0, 0, 0, 0.06)",
-        "card-hover": "0 8px 32px rgba(227, 30, 36, 0.12)",
-        float: "0 8px 30px rgba(0, 0, 0, 0.15)",
+        soft: "0 2px 20px rgba(74, 63, 53, 0.06)",
+        card: "0 8px 40px rgba(74, 63, 53, 0.08)",
+        "card-hover": "0 16px 48px rgba(74, 63, 53, 0.14)",
+        float: "0 12px 40px rgba(74, 63, 53, 0.18)",
+        menu: "0 20px 60px rgba(74, 63, 53, 0.15), 0 8px 20px rgba(74, 63, 53, 0.08)",
+        photo: "0 12px 32px rgba(74, 63, 53, 0.2)",
       },
       animation: {
+        "fade-up": "fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1)",
         "fade-in": "fadeIn 0.5s ease-out",
-        shimmer: "shimmer 2s infinite",
+        float: "float 6s ease-in-out infinite",
       },
       keyframes: {
-        fadeIn: {
-          "0%": { opacity: "0", transform: "translateY(10px)" },
+        fadeUp: {
+          "0%": { opacity: "0", transform: "translateY(24px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
-        shimmer: {
-          "0%": { backgroundPosition: "-200% 0" },
-          "100%": { backgroundPosition: "200% 0" },
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-8px)" },
         },
       },
     },

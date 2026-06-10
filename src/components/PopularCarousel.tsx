@@ -2,6 +2,8 @@
 
 import { useRef } from "react";
 import { motion } from "framer-motion";
+import { CategoryHeading } from "./CategoryHeading";
+import { FoodThumbnail } from "./FoodThumbnail";
 import { formatPrice } from "@/lib/format";
 import type { MenuItem } from "@/types/menu";
 
@@ -16,75 +18,68 @@ export function PopularCarousel({ items }: PopularCarouselProps) {
 
   const scroll = (direction: "left" | "right") => {
     if (!scrollRef.current) return;
-    const amount = direction === "left" ? -280 : 280;
-    scrollRef.current.scrollBy({ left: amount, behavior: "smooth" });
+    scrollRef.current.scrollBy({ left: direction === "left" ? -300 : 300, behavior: "smooth" });
   };
 
   return (
-    <section className="px-4 py-8 sm:px-6" aria-labelledby="popular-heading">
+    <section className="px-4 py-10 sm:px-6" aria-labelledby="popular-heading">
       <div className="mx-auto max-w-6xl">
-        <div className="mb-6 flex items-end justify-between">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 id="popular-heading" className="font-script text-3xl text-gray-800 dark:text-gray-100">
-              Popular Dishes
-            </h2>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              Loved by our guests
-            </p>
-          </motion.div>
-          <div className="hidden gap-2 sm:flex">
-            <button
-              type="button"
-              onClick={() => scroll("left")}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 transition hover:border-brand-red hover:text-brand-red dark:border-white/10 dark:bg-gray-900 dark:text-gray-300"
-              aria-label="Scroll left"
-            >
-              ←
-            </button>
-            <button
-              type="button"
-              onClick={() => scroll("right")}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 transition hover:border-brand-red hover:text-brand-red dark:border-white/10 dark:bg-gray-900 dark:text-gray-300"
-              aria-label="Scroll right"
-            >
-              →
-            </button>
+        <div className="mb-2 flex items-end justify-between">
+          <div className="flex-1">
+            <CategoryHeading title="Guest Favorites" subtitle="Loved by our regulars" />
+          </div>
+          <div className="mb-8 ml-4 hidden shrink-0 gap-2 sm:flex">
+            <CarouselButton direction="left" onClick={() => scroll("left")} />
+            <CarouselButton direction="right" onClick={() => scroll("right")} />
           </div>
         </div>
 
         <div
           ref={scrollRef}
-          className="scrollbar-hide -mx-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0"
+          className="scrollbar-hide -mx-4 flex gap-5 overflow-x-auto px-4 pb-4 sm:mx-0 sm:px-0"
         >
           {items.map((item, index) => (
             <motion.article
               key={item.id}
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: 24 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05 }}
-              className="w-64 shrink-0 rounded-2xl border border-gray-100 bg-white p-5 shadow-card dark:border-white/10 dark:bg-gray-900/80"
+              className="w-56 shrink-0 menu-section-box flex flex-col items-center text-center sm:w-60"
             >
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-red/10 text-2xl">
-                {item.categoryId === "pizza" ? "🍕" : item.categoryId === "juice" ? "🥤" : item.categoryId === "breakfast" ? "🍳" : "⭐"}
-              </div>
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-900 dark:text-white">
+              <FoodThumbnail categoryId={item.categoryId} size="md" />
+              <h3
+                id={index === 0 ? "popular-heading" : undefined}
+                className="mt-4 text-xs font-bold uppercase tracking-wide text-brand-ink dark:text-brand-linen"
+              >
                 {item.name}
               </h3>
-              <p className="mt-2 text-base font-bold text-brand-red">
+              <p className="mt-2 text-sm font-semibold tabular-nums text-brand-brown dark:text-brand-tan">
                 {formatPrice(item.price, item.currency)}
               </p>
-              <span className="mt-2 inline-block rounded-full bg-brand-red/10 px-2 py-0.5 text-[10px] font-bold uppercase text-brand-red">
-                Popular
-              </span>
             </motion.article>
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function CarouselButton({
+  direction,
+  onClick,
+}: {
+  direction: "left" | "right";
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-tan/60 bg-white/80 text-brand-brown transition hover:border-brand-brown hover:bg-brand-cream dark:border-brand-brown/50 dark:bg-brand-brown-deep/60 dark:text-brand-tan"
+      aria-label={direction === "left" ? "Scroll left" : "Scroll right"}
+    >
+      {direction === "left" ? "←" : "→"}
+    </button>
   );
 }

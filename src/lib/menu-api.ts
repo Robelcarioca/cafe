@@ -3,7 +3,6 @@
  * Swap implementations to fetch from a database or CMS without changing UI code.
  */
 import {
-  galleryImages,
   getCategoryById,
   getFeaturedItems,
   getItemsByCategory,
@@ -11,7 +10,7 @@ import {
   menuCategories,
   menuItems,
 } from "@/data/menu";
-import type { GalleryImage, MenuCategory, MenuItem } from "@/types/menu";
+import type { MenuCategory, MenuItem } from "@/types/menu";
 
 export interface MenuQuery {
   categoryId?: MenuItem["categoryId"];
@@ -82,10 +81,6 @@ export async function fetchFeaturedItems(): Promise<MenuItem[]> {
 
 export async function fetchPopularItems(): Promise<MenuItem[]> {
   return getPopularItems();
-}
-
-export async function fetchGalleryImages(): Promise<GalleryImage[]> {
-  return galleryImages;
 }
 
 export { getCategoryById, getItemsByCategory };
